@@ -3,30 +3,54 @@
   <thead>
 	<tr>
 		<th>Дата / время</th>
-		<th>Событие</th>
-		<th>Журнал игры</th>
+		<th>Комментарии</th>
+		<th>Результаты</th>
 	</tr>
   </thead>
-  <tbody>
+  <tbody id="arena-holder">
    <c:forEach var="event" items="${events}">
-	<tr ondblclick="window.location = '${pageContext.request.contextPath}/arena/view?id=${event._id}'" class="">
-		<td>${event.sdate}</td>
-		<td>${event.comment}</td>
-		<td>${event.game}</td>
+	<tr class="game-example game-holder" style="display:none;">
+		<td class="game-date"></td>
+		<td class="game-comment"></td>
+		<td class="game-result"></td>
 	</tr>
    </c:forEach>
   </tbody>
  </table>
  <script type="text/javascript">
-
- var selected = null;
-
- $(document).ready(function(){
+$(document).ready(function(){
    $("#rating table tbody tr").dblclick(function(){
       window.location = "/axaj/bot/view/" + $(this).prop("uid");
    });
-   $.post("/arena");	
- });
+   $.post("/ajax/arena", function(data) {
+	var arena = $.parseJSON(data);
+    arena.forEach(function(game){
+		var holder = $("#arena-holder");
+		var newGame = holder.find(".game-example").clone();
+		newGame.find(".game-date").html(game.START.substring(0,23));
+		
+		var notes = "";
+		for (i = 0; i < game.NOTES.length; i++) {
+			notes+=(notes==""?"":"<br/>")+game.NOTES[i];
+		}
+		newGame.find(".game-comment").html(notes);
 
+		var results = "";
+		for (i = 0; i < game.BOTID.length; i++) {
+			results+=(results==""?"":", ")+game.BOTID[i]+"("+game.RESULTMAP[game.BOTID[i]]+")";
+		};
+		newGame.find(".game-result").html(results);
+
+		newGame.dblclick(function() {
+     		$.post("/ajax/game/view/"+game.GID, function(data) {
+				$("#maincontainer").html(data);	
+     		});
+   		});
+		newGame.removeClass("game-example");	
+		newGame.show();
+		holder.append(newGame);
+	});
+   });  
+ });
  </script>
 </div>

@@ -4,7 +4,7 @@ package main
 import (
 	"frontend/core"
 	//	"frontend/structs"
-	//	"fmt"
+	// "fmt"
 	"io/ioutil"
 	"net/http"
 	"strings"
@@ -28,10 +28,15 @@ func handlerAjax(w http.ResponseWriter, r *http.Request) {
 		} else {
 			// Dynamic handler (Controller)
 			path := strings.Split(r.URL.Path, "/")
-			if len(path) > 1 {
-				if path[1] == "arena" {
-					if len(path) == 2 {
-						game.GetAll(w, r)
+			if path[1] == "ajax" {
+				if path[2] == "arena" {
+					if len(path) == 3 {
+						core.GetGames(w)
+					}
+				}
+				if path[2] == "rating" {
+					if len(path) == 3 {
+						core.GetRating(w)
 					}
 				}
 			}

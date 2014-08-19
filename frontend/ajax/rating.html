@@ -3,32 +3,46 @@
   <thead>
 	<tr>
 		<th>#</th>
+		<th>Бот</th>
 		<th>ФИО участника</th>
-		<th>Победа</th>
-		<th>Ничья</th>
-		<th>Поражение</th>
-		<th>Игры</th>
+		<th>Поб/Нич/Пор/Игр</th>
 		<th>Рейтинг</th>
+		<th></th>
 	</tr>
   </thead>
-  <tbody>
-  <c:forEach var="bot" items="${bots}">
-	<tr ondblclick="window.location = '${pageContext.request.contextPath}/bot/view?id=${bot._id}'">		
-		<td>${bot.position}</td>
-		<td>${bot.username}</td>
-		<td>${bot.wins}</td>
-		<td>${bot.draws}</td>
-		<td>${bot.loses}</td>
-		<td>${bot.games}</td>
-		<td>${bot.points}
-		<% if (session.getAttribute("login")!=null && session.getAttribute("login").equals("admin")) { %>
-		<a href="${pageContext.request.contextPath}/arena/${bot.user}"><i class="icon-eye-open"></i></a>		
-		<a onclick="return confirm('Перекомпилировать бота?')" href="${pageContext.request.contextPath}/bot/recompile?id=${bot._id}"><i class="icon-refresh"></i></a>		
-		<a onclick="return confirm('Удалить бота?')" href="${pageContext.request.contextPath}/bot/delete?id=${bot._id}"><i class="icon-remove"></i></a>		
-		<%}%>
+  <tbody id="rating-holder">
+	<tr class="bot-example bot-rating" style="display:none;">		
+		<td class="bot-rank"></td>
+		<td class="bot-botname"></td>
+		<td class="bot-username"></td>
+		<td class="bot-results"></td>
+		<td class="bot-rating"></td>
+		<td>
+			<a href="${pageContext.request.contextPath}/arena/${bot.user}"><i class="glyphicon glyphicon-eye-open"></i></a>
+			<a onclick="return confirm('Перекомпилировать бота?')" href="${pageContext.request.contextPath}/bot/recompile?id=${bot._id}"><span class="glyphicon glyphicon-refresh"></span></a>
+			<a onclick="return confirm('Удалить бота?')" href="${pageContext.request.contextPath}/bot/delete?id=${bot._id}"><span class="glyphicon glyphicon-remove"></span></a>
 		</td>
 	</tr>
   </c:forEach>
   </tbody>
  </table>
+ <script type="text/javascript">
+$(document).ready(function() {
+   $.post("/ajax/rating", function(data) {
+	var rating = $.parseJSON(data);
+    rating.forEach(function(bot){
+		var holder = $("#rating-holder");
+		var newBot = holder.find(".bot-example").clone();
+		newBot.dblclick(function() {
+     		$.post("/ajax/bot/view/"+bot.BID, function(data) {
+				$("#maincontainer").html(data);	
+     		});
+   		});
+		newBot.removeClass("bot-example");	
+		newBot.show();
+		holder.append(newBot);
+	});
+   });  
+ });
+ </script>
 </div>
