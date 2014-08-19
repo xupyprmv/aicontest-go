@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<link rel="stylesheet" type="text/css" href="/css/bootstrap.min.css">
+<script type="text/javascript" src="/js/jquery-2.1.1.min.js"></script>
+<script type="text/javascript" src="/js/bootstrap.min.js"></script>
+<title>КРФМЛИ : AIContest</title>
+</head>
+<body id="body">
+
+<!-- navigation panel -->
+<nav class="navbar navbar-inverse" role="navigation">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <a class="disabled ajaxload navbar-brand" href="/overview"><span class="glyphicon glyphicon-home glyphicon-white"></span></a>
+    </div>
+
+    <!-- Collect the nav links, forms, and other content for toggling -->
+    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+      <ul class="nav navbar-nav">
+		<li class=""><a class="disabled ajaxload" href="/overview">Описание игры</a></li>
+		<li class=""><a class="disabled ajaxload" href="/bot">Отправить решения</a></li>
+		<li class=""><a class="disabled ajaxload" href="/arena">Арена</a></li>
+		<li class=""><a class="disabled ajaxload" href="/rating">Рейтинг</a></li>
+		<li class=""><a class="disabled ajaxload" href="/faq">FAQ</a></li>
+   	  </ul>
+	  <ul style="display:none;" class="nav navbar-nav navbar-right">
+	    <li>
+		  <a href="#"><i class="glyphicon glyphicon-user glyphicon-white"></i>&nbsp;&nbsp;</a>
+	    </li>
+	    <li>
+		  <form class="form-inline" style="margin-left:10px; margin-bottom: 0px; margin-top: 4px;" action="" method="post">
+		    <button type="submit" class="btn btn-inverse" style="margin-top: 0px;">Выход</button>
+		  </form>
+	    </li>
+	  </ul>
+	  <ul style="display:none;" class="nav navbar-nav navbar-right">
+		<li>
+		  <span style="margin-bottom: 0px; margin-top: 4px;" action="registration/login" method="post">
+   			<input id="login" name="login" type="text" class="input-small" placeholder="Логин" />
+ 		    <input id="passwd" name="passwd" type="password" class="input-small" placeholder="Пароль" />
+   			<label class="checkbox" style="color:grey;">
+      		  <input id="rememberme" name="rememberme" type="checkbox" /> Запомнить меня
+   			</label>
+   			<button type="submit" class="btn btn-success" style="margin-top: 0px;">Войти</button>
+		  </span>
+		</li>
+	  </ul>
+	  <ul class="nav navbar-nav navbar-right">
+	    <li>
+		  <div style="margin-left:10px; margin-bottom: 0px; margin-top: 6px;">
+		   <a id="enterbutton" class="disabled ajaxload" href="/login">
+   			<button type="submit" class="btn btn-success" style="margin-top: 0px;">Войти</button>
+		   </a>	
+		   <a id="registrationbutton" class="disabled ajaxload" href="/registration">
+			<button type="submit" class="btn btn-warning" style="margin-top: 0px;">Регистрация</button>
+		   </a>	
+   		  </div>
+		</li>
+	  </ul>
+    </div>
+  </div>
+</nav>
+
+<!-- alert containers -->
+<div class="container" style="display:none">
+  <div id="errorcontainer" class="alert alert-error"></div>
+</div>
+<div class="container" style="display:none">
+  <div id="successcontainer" class="alert alert-success"></div>
+</div>
+
+<!-- main container -->
+<div id="maincontainer" class="container" style="">
+</div>
+
+</body>
+
+<!-- autoscripts -->
+<script type="text/javascript">
+$( document ).ready(function() {
+	
+ function modifyHrefs(nodeId) {
+  var dom = document.getElementById(nodeId);
+
+  $(dom).find("a.disabled").click(function() { return false; });
+
+  $(dom).find(".ajaxload").each(function() {
+   $(this).click(function() {
+     $.post("/ajax"+$(this).attr("href")+".html", function(data) {
+ 	   $("#maincontainer").html(data);	
+     });
+   });
+  });
+ }
+
+ $(document).ajaxError(function() {
+	$("#errorcontainer" ).text("Невозможно выполнить операцию. Попробуйте позже либо обратитесь к администратору.");
+ });
+
+ $(document).ajaxComplete(function() {
+	 modifyHrefs("maincontainer");
+ });
+
+ modifyHrefs("body");
+
+ if (window.location.pathname == "/") {
+   $.post("/ajax/rating.html", function(data) {
+    $("#maincontainer").html(data);	
+   }); 
+ } else {
+   $.post("/ajax"+window.location.pathname+".html", function(data) {
+    $("#maincontainer").html(data);	
+   });
+ }
+});
+</script>
+</html>
