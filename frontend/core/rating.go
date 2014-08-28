@@ -11,6 +11,7 @@ func GetRating(w http.ResponseWriter) {
 	result = make([]*structs.BotRich, 1)
 
 	var bot1 = &structs.BotRich{}
+	bot1.BID = "123"
 
 	result[0] = bot1
 
