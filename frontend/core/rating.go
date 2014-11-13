@@ -2,7 +2,7 @@ package core
 
 import (
 	"encoding/json"
-	"frontend/structs"
+	"github.com/xupyprmv/aicontest-go/frontend/structs"
 	"net/http"
 )
 

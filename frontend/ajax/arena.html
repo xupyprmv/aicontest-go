@@ -20,7 +20,7 @@
  <script type="text/javascript">
 $(document).ready(function(){
    $("#rating table tbody tr").dblclick(function(){
-      window.location = "/axaj/bot/view/" + $(this).prop("uid");
+      window.location = "/ajax/bot/view/" + $(this).prop("uid");
    });
    $.post("/ajax/arena", function(data) {
 	var arena = $.parseJSON(data);

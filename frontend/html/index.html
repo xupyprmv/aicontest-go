@@ -5,9 +5,28 @@
 <link rel="stylesheet" type="text/css" href="/css/bootstrap.min.css">
 <script type="text/javascript" src="/js/jquery-2.1.1.min.js"></script>
 <script type="text/javascript" src="/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="/js/common.js"></script>
 <title>КРФМЛИ : AIContest</title>
+<script type="text/javascript">
+ $(function () { 
+    $("#errorcontainer").modal({show:false});
+});  
+</script>
 </head>
 <body id="body">
+<!-- alert containers -->
+<div id="errorcontainer" class="modal fade in" role="dialog">
+  <div class="modal-dialog" style="z-index:1500;">
+        <div id="errormessage" class="alert alert-danger">
+        </div>
+  </div>	  
+</div>
+<div id="successcontainer" class="modal fade in" role="dialog">
+  <div class="modal-dialog" style="z-index:1500;">
+        <div id="successmessage" class="alert alert-success"">
+        </div>
+  </div>	  
+</div>
 
 <!-- navigation panel -->
 <nav class="navbar navbar-inverse" role="navigation">
@@ -15,7 +34,7 @@
     <div class="navbar-header">
       <a class="disabled ajaxload navbar-brand" href="/overview"><span class="glyphicon glyphicon-home glyphicon-white"></span></a>
     </div>
-
+	<div id="msg_error"></div><div id="msg_success"></div>
     <!-- Collect the nav links, forms, and other content for toggling -->
     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
       <ul class="nav navbar-nav">
@@ -63,14 +82,6 @@
   </div>
 </nav>
 
-<!-- alert containers -->
-<div class="container" style="display:none">
-  <div id="errorcontainer" class="alert alert-error"></div>
-</div>
-<div class="container" style="display:none">
-  <div id="successcontainer" class="alert alert-success"></div>
-</div>
-
 <!-- main container -->
 <div id="maincontainer" class="container" style="">
 </div>
@@ -96,7 +107,8 @@ $( document ).ready(function() {
  }
 
  $(document).ajaxError(function() {
-	$("#errorcontainer" ).text("Невозможно выполнить операцию. Попробуйте позже либо обратитесь к администратору.");
+	$("#errormessage" ).text("Невозможно выполнить операцию. Попробуйте позже либо обратитесь к администратору.");
+	$("#errorcontainer").modal().delay(5000).fadeOut();
  });
 
  $(document).ajaxComplete(function() {

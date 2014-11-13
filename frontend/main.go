@@ -2,7 +2,7 @@
 package main
 
 import (
-	"frontend/core"
+	"github.com/xupyprmv/aicontest-go/frontend/core"
 	//	"frontend/structs"
 	// "fmt"
 	"io/ioutil"
@@ -28,7 +28,7 @@ func handlerAjax(w http.ResponseWriter, r *http.Request) {
 		} else {
 			// Dynamic handler (Controller)
 			path := strings.Split(r.URL.Path, "/")
-			if path[1] == "ajax" {
+			if path[1] == "ajax" && len(path) > 1 {
 				if path[2] == "arena" {
 					if len(path) == 3 {
 						core.GetGames(w)
@@ -37,6 +37,11 @@ func handlerAjax(w http.ResponseWriter, r *http.Request) {
 				if path[2] == "rating" {
 					if len(path) == 3 {
 						core.GetRating(w)
+					}
+				}
+				if path[2] == "bot" {
+					if path[3] == "submit" && len(path) > 2 {
+						core.SaveBot(w, r)
 					}
 				}
 			}
