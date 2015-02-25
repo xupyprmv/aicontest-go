@@ -17,12 +17,12 @@ func GetConnection() *sql.DB {
 		panic(err.Error())
 	}
 	_, err = connection.Exec(`CREATE TABLE IF NOT EXISTS aicontest.BOT (
-  							BID VARCHAR(36)  NOT NULL,
+  							BID VARCHAR(36)  NOT NULL PRIMARY KEY,
   							CID VARCHAR(36)  NOT NULL,
   							UID VARCHAR(36)  NOT NULL,
   							LANGUAGE VARCHAR(10)  NOT NULL,
 							SOURCE TEXT  NOT NULL,
-  							COMPILED BOOLEAN  NOT NULL,
+  							COMPILED TINYINT(1)  NOT NULL,
   							COMPILEOUTPUT TEXT ,
  							INDEX b(BID),
   							INDEX c(CID),

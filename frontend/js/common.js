@@ -10,7 +10,7 @@ $( document ).ready(function() {
             }
             o[this.name].push(this.value || '');
         } else {
-            o[this.name] = this.value || '';
+			o[this.name] = this.value || '';
         }
     });
     return o;
