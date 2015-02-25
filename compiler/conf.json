@@ -1,0 +1,25 @@
+{
+    "database_url": "aicontest:aicontest_pass@/aicontest",
+	"result_dir": "/tmp/aicontest-compiled",
+	"compilers":[
+		{
+			"language":"PASCAL",
+			"compile_string":"fpc -So -XS $1 -o$2"
+		},
+		{
+			"language":"CPP",
+			"compile_string":"g++ -static -fno-optimize-sibling-calls -fno-strict-aliasing -lm -s -x c++ -O2 -o $2 $1"
+		},
+		{
+			"language":"PYTHON",
+			"compile_string":"pylint -E $1",
+			"postcompile":"cp $1 $2"
+		},
+		{
+			"language":"JAVA",
+			"precompile":"\"mkdir $1-java\" && \"cp -T $1 $1-java/Main.java\"",
+			"compile_string":"javac -cp $1-java/Main.java",
+			"postcompile":"cp $1-java/Main.class $2/Main.class"
+		}
+	]
+}
