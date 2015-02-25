@@ -190,11 +190,15 @@ func executeString(execString string) {
 	if execString == "" {
 		return
 	}
-	es := strings.Fields(execString)
-	log.Println("EXECUTE STRING > " + execString)
-	cmd := exec.Command(es[0], es[1:len(es)]...)
-	if err := cmd.Start(); err != nil {
-		log.Fatalf("cmd.Start: %v")
+	commands := strings.Split(execString, " && ")
+
+	for _, command := range commands {
+		es := strings.Fields(command)
+		log.Println("EXECUTE STRING > " + command)
+		cmd := exec.Command(es[0], es[1:len(es)]...)
+		if err := cmd.Start(); err != nil {
+			log.Fatalf("cmd.Start: %v", err)
+		}
 	}
 	return
 }

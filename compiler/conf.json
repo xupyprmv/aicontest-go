@@ -17,8 +17,8 @@
 		},
 		{
 			"language":"JAVA",
-			"precompile":"\"mkdir $1-java\" && \"cp -T $1 $1-java/Main.java\"",
-			"compile_string":"javac -cp $1-java/Main.java",
+			"precompile":"mkdir $1-java && cp -T $1 $1-java/Main.java",
+			"compile_string":"javac $1-java/Main.java",
 			"postcompile":"cp $1-java/Main.class $2/Main.class"
 		}
 	]
